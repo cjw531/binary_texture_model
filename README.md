@@ -4,7 +4,12 @@ Generates simulated medical images for (1) signal present; and (2) signal absent
 <hr>
 
 ## Python
-Refer to: [`./python/`](./python) folder
+Refer to: [`./python/`](./python) folder.
+
+Install dependencies:
+```
+conda env create -f environment.yml
+```
 
 ### Generate Signal Absent Dataset
 [`./python/signal_absent.py`](./python/signal_absent.py)
