@@ -6,7 +6,7 @@ Generates simulated medical images for (1) signal present; and (2) signal absent
 ## Python
 Refer to: [`./python/`](./python) folder.
 
-Install dependencies:
+Install dependencies [`./python/environment.yml`](./python/environment.yml):
 ```
 conda env create -f environment.yml
 ```
