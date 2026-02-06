@@ -62,6 +62,19 @@ def parse_args() -> argparse.Namespace:
 
     return parser.parse_args()
 
+def save_config(args):
+    """
+    Save the command-line arguments to <outdir>/config.txt.
+    Each line is written as: key = value
+    """
+    outdir = args.outdir
+    os.makedirs(outdir, exist_ok=True)  # ensure directory exists
+
+    config_path = os.path.join(outdir, "config.txt")
+    with open(config_path, "w") as f:
+        for key, value in vars(args).items():
+            f.write(f"{key} = {value}\n")
+
 def run(data_path: str, num_datasets: int, image_dim: int, alpha: float, radius: float, generate_absent: bool, generate_present: bool) -> None:
     print("========================================")
     print(f"Generating {num_datasets} datasets in {data_path}")
@@ -129,6 +142,7 @@ if __name__ == "__main__":
     """
 
     args = parse_args()
+    save_config(args)
     run(data_path=args.outdir, num_datasets=args.num_datasets, image_dim=args.image_dim, alpha=args.alpha, radius=args.radius, \
         generate_absent=args.absent, generate_present=args.present)
     
