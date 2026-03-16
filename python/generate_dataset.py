@@ -88,11 +88,23 @@ def run(data_path: str, num_datasets: int, image_dim: int, alpha: float, radius:
     # create subfolders depending on requested datasets
     os.makedirs(data_path, exist_ok=True)
     if generate_absent:
-        absent_dir = os.path.join(data_path, "signal_absent")
-        os.makedirs(absent_dir, exist_ok=True)
+        absent_clean_png_dir = os.path.join(data_path, "signal_absent_clean_png")
+        os.makedirs(absent_clean_png_dir, exist_ok=True)
+        absent_clean_npy_dir = os.path.join(data_path, "signal_absent_clean_npy")
+        os.makedirs(absent_clean_npy_dir, exist_ok=True)
+        absent_noise_png_dir = os.path.join(data_path, "signal_absent_noise_png")
+        os.makedirs(absent_noise_png_dir, exist_ok=True)
+        absent_noise_npy_dir = os.path.join(data_path, "signal_absent_noise_npy")
+        os.makedirs(absent_noise_npy_dir, exist_ok=True)
     if generate_present:
-        present_dir = os.path.join(data_path, "signal_present")
-        os.makedirs(present_dir, exist_ok=True)
+        present_clean_png_dir = os.path.join(data_path, "signal_present_clean_png")
+        os.makedirs(present_clean_png_dir, exist_ok=True)
+        present_clean_npy_dir = os.path.join(data_path, "signal_present_clean_npy")
+        os.makedirs(present_clean_npy_dir, exist_ok=True)
+        present_noise_png_dir = os.path.join(data_path, "signal_present_noise_png")
+        os.makedirs(present_noise_png_dir, exist_ok=True)
+        present_noise_npy_dir = os.path.join(data_path, "signal_present_noise_npy")
+        os.makedirs(present_noise_npy_dir, exist_ok=True)
 
     muimg = np.zeros((image_dim, image_dim), dtype=np.float64)
     sigimg = np.ones((image_dim, image_dim), dtype=np.float64)
@@ -105,14 +117,14 @@ def run(data_path: str, num_datasets: int, image_dim: int, alpha: float, radius:
             img_absent_noise = img_absent + 0.1 * np.random.randn(*img_absent.shape) # add Gaussian noise
 
             # save signal absent in numpy
-            np.save(os.path.join(absent_dir, f"lumpy_{i}.npy"), img_absent)
-            np.save(os.path.join(absent_dir, f"lumpy_noise_{i}.npy"), img_absent_noise)
+            np.save(os.path.join(absent_clean_npy_dir, f"lumpy_{i}.npy"), img_absent)
+            np.save(os.path.join(absent_noise_npy_dir, f"lumpy_noise_{i}.npy"), img_absent_noise)
 
             # save signal absent image in 8-bit img
             img_absent_8bit = (img_absent * 255).astype(np.uint8) # convert to 8-bit grayscale for saving
-            cv2.imwrite(os.path.join(absent_dir, f"lumpy_{i}.png"), img_absent_8bit) # save image
+            cv2.imwrite(os.path.join(absent_clean_png_dir, f"lumpy_{i}.png"), img_absent_8bit) # save image
             img_absent_noise_8bit = (img_absent_noise * 255).astype(np.uint8)
-            cv2.imwrite(os.path.join(absent_dir, f"lumpy_noise_{i}.png"), img_absent_noise_8bit)
+            cv2.imwrite(os.path.join(absent_noise_png_dir, f"lumpy_noise_{i}.png"), img_absent_noise_8bit)
         
         ''' Signal Present Image Generation '''
         if generate_present:
@@ -122,14 +134,14 @@ def run(data_path: str, num_datasets: int, image_dim: int, alpha: float, radius:
             img_present_noise = img_present + 0.1 * np.random.randn(*img_present.shape)
 
             # save signal present in numpy
-            np.save(os.path.join(present_dir, f"lumpy_{i}.npy"), img_present)
-            np.save(os.path.join(present_dir, f"lumpy_noise_{i}.npy"), img_present_noise)
+            np.save(os.path.join(present_clean_npy_dir, f"lumpy_{i}.npy"), img_present)
+            np.save(os.path.join(present_noise_npy_dir, f"lumpy_noise_{i}.npy"), img_present_noise)
 
             # save signal present image in 8-bit img
             img_present_8bit = (img_present * 255).astype(np.uint8)
-            cv2.imwrite(os.path.join(present_dir, f"lumpy_{i}.png"), img_present_8bit)
+            cv2.imwrite(os.path.join(present_clean_png_dir, f"lumpy_{i}.png"), img_present_8bit)
             img_present_noise_8bit = (img_present_noise * 255).astype(np.uint8)
-            cv2.imwrite(os.path.join(present_dir, f"lumpy_noise_{i}.png"), img_present_noise_8bit)
+            cv2.imwrite(os.path.join(present_noise_png_dir, f"lumpy_noise_{i}.png"), img_present_noise_8bit)
 
 
 if __name__ == "__main__":
