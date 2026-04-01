@@ -106,14 +106,20 @@ def run(data_path: str, num_datasets: int, image_dim: int, alpha: float, radius:
         present_noise_npy_dir = os.path.join(data_path, "signal_present_noise_npy")
         os.makedirs(present_noise_npy_dir, exist_ok=True)
 
+    # base input arrays
     muimg = np.zeros((image_dim, image_dim), dtype=np.float64)
     sigimg = np.ones((image_dim, image_dim), dtype=np.float64)
 
+    # pre-generate the signal (assuming the signal is identical across the dataset)
+    if generate_present:
+        signal = disk_signal(image_dim, alpha, radius) # generate signal present image
+
     ''' generate datasets '''
     for i in tqdm(range(num_datasets), total=num_datasets, desc="Generating datasets"):
+        img_absent = bin_1_f(muimg, sigimg, numimgs=1) # generate signal absent image, base background
+
         ''' Signal Absent Image Generation '''
         if generate_absent:
-            img_absent = bin_1_f(muimg, sigimg, numimgs=1) # generate signal absent image
             img_absent_noise = img_absent + 0.1 * np.random.randn(*img_absent.shape) # add Gaussian noise
 
             # save signal absent in numpy
@@ -128,8 +134,6 @@ def run(data_path: str, num_datasets: int, image_dim: int, alpha: float, radius:
         
         ''' Signal Present Image Generation '''
         if generate_present:
-            img_absent = bin_1_f(muimg, sigimg, numimgs=1) # generate signal absent image
-            signal = disk_signal(image_dim, alpha, radius) # generate signal present image
             img_present = img_absent + signal
             img_present_noise = img_present + 0.1 * np.random.randn(*img_present.shape)
 
