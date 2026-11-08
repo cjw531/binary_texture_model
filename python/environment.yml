@@ -1,5 +1,5 @@
 # To run: conda env create -f environment.yml
-name: med_img_gen
+name: binary_texture
 channels:
   - conda-forge
   - defaults
